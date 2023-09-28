@@ -1,0 +1,88 @@
+-- Create a Bookstore database
+create database BOOKSTORE;
+USE BOOKSTORE;
+
+-- Create the 'books'table to store book information
+create table books (
+	bookid int primary key auto_increment,
+    title varchar(255) not null,
+    author varchar(255) not null,
+    genre varchar(50) not null,
+    publication_year int,
+    price decimal(10, 2),
+    copies_sold int
+);
+
+-- Insert sample data into the 'books' table
+insert into books (title, author, genre, publication_year, price, copies_sold)
+values
+	('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 1925, 9.99, 500),
+    ('To Kill a Mockingbird', 'Harper Lee', 'Fiction', 1960, 10.99, 600),
+    ('1984', 'George Orwell', 'Science Fiction', 1949, 8.99, 750),
+    ('Pride and Prejudice', 'Jane Austen', 'Romance', 1813, 7.99, 900),
+    ('The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 1937, 12.99, 450),
+    ('The Catcher in the Rye', 'J.D. Salinger', 'Fiction', 1951, 9.99, 550),
+    ('The Hunger Games', 'Suzanne Collins', 'Science Fiction', 2008, 11.99, 700),
+    ('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 'Fantasy', 1997, 14.99, 800),
+    ('The Da Vinci Code', 'Dan Brown', 'Mystery', 2003, 10.99, 600),
+    ('The Alchemist', 'Paulo Coelho', 'Fiction', 1988, 8.99, 950);
+    
+-- Create the 'customers' table to store customer information
+create table customers (
+	customer_id int primary key auto_increment,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    email varchar(100) unique not null,
+    phone_number varchar(20),
+    address varchar(255)
+);
+
+-- Insert sample data into the 'customer' table
+insert into customers (first_name, last_name, email, phone_number, address)
+values
+	('John', 'Doe', 'johndoe@example.com', '+1234567890', '123 Main St, Anytown, USA'),
+    ('Jane', 'Smith', 'janesmith@example.com', '+9876543210', '456 Elm St, Othercity, USA'),
+    ('Alice', 'Johnson', 'alice@example.com', NULL, '789 Oak St, Anothercity, USA');
+    
+-- Create the 'Orders' table to store order information
+create table orders (
+		order_id int primary key auto_increment,
+        customer_id int,
+        order_date date,
+        total_amount decimal(10, 2),
+        foreign key(customer_id) references customers(customer_id)
+);
+
+-- Insert sample data into the 'Orders' table
+insert into orders (customer_id, order_date, total_amount)
+values
+	(1, '2022-08-15', 45.97),
+    (2, '2022-08-16', 33.98),
+    (3, '2022-08-17', 28.99);
+    
+-- Create the 'order-items' table to store items whithin each order
+create table order_items (
+		order_item_id int primary key auto_increment,
+        order_id int,
+        bookid int,
+        quantity int,
+        item_price decimal(10, 2),
+        foreign key (order_id) references orders(order_id),
+        foreign key (bookid) references books(bookid)
+);
+
+-- Insert sample data into the 'order_items' table
+insert into order_items (order_id, bookid, quantity, item_price)
+values
+	(1, 1, 2, 19.98),
+    (1, 3, 1, 8.99),
+    (2, 2, 3, 32.97),
+    (3, 5, 2, 25.98);
+    
+select * from books;
+
+select * from customers;
+
+select * from orders;
+
+select * from order_items;
